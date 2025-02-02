@@ -61,7 +61,7 @@
     }
 
     /* ======================================
-       UI ELEMENTS (unchanged functionality)
+       UI ELEMENTS
        ====================================== */
     .input-container {
       position: absolute;
@@ -70,12 +70,28 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 400px;
+      /* Increased width to accommodate the big logo and input */
+      width: 600px;
       z-index: 1000; /* On top of everything */
     }
 
-    .drop-area {
+    /* New flex container for the big logo and input field */
+    .input-row {
+      display: flex;
+      align-items: center;
       width: 100%;
+      margin-bottom: 20px;
+    }
+
+    /* Big logo to the left of the input */
+    .big-logo {
+      width: 100px; /* Adjust size as needed */
+      margin-right: 20px;
+    }
+
+    /* Let the drop area take the remaining space */
+    .drop-area {
+      flex: 1;
       height: 60px;
       border-radius: 30px;
       background-color: rgba(255,255,255,0.25);
@@ -88,7 +104,6 @@
       box-shadow:
         0 2px 3px 1px rgba(180,180,180,0.3),
         inset 0 -10px 20px -10px rgba(255,255,255,0.9);
-      margin-bottom: 20px;
       cursor: text;
       transition: all 1.33s ease;
       isolation: isolate;
@@ -158,6 +173,11 @@
         0 2px 3px 1px rgba(180,180,180,0.3),
         inset 0 -10px 20px -10px rgba(255,255,255,0.9);
       transform: scale(1);
+      /* Added flex styling for aligning text and small logo */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
 
     .styled-button:hover:not(:active),
@@ -224,6 +244,18 @@
 
     .styled-button .text {
       color: #333;
+      position: relative;
+      z-index: 3;
+    }
+
+    /* Small logo inside the button */
+    .styled-button .small-logo {
+      width: 24px; /* Adjust size as needed */
+      height: auto;
+      margin-left: 10px;
+      vertical-align: middle;
+      position: relative;
+      z-index: 3;
     }
 
     @keyframes shimmer {
@@ -239,14 +271,18 @@
   <!-- Subtle glow ring for an Apple “pop” effect -->
   <div class="glow-ring"></div>
 
-  <!-- Input and button UI -->
+  <!-- Input and button UI with logos -->
   <div class="input-container">
-    <div class="drop-area" id="dropArea">
-      <input type="text" id="urlInput" placeholder="Type or drop a URL" autocomplete="off" />
+    <div class="input-row">
+      <img src="SendToQuest.png" alt="Send to Quest Logo" class="big-logo" />
+      <div class="drop-area" id="dropArea">
+        <input type="text" id="urlInput" placeholder="Type or drop a URL" autocomplete="off" />
+      </div>
     </div>
     <div class="suggestions" id="suggestions"></div>
     <button id="openOnQuestButton" class="styled-button">
       <span class="text">Open on Quest</span>
+      <img src="SendToQuest2.png" alt="Send to Quest Small Logo" class="small-logo" />
       <div class="shimmer"></div>
     </button>
   </div>
