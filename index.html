@@ -76,10 +76,10 @@
       display: flex;
       align-items: center;
       width: 100%;
-      margin-bottom: 0;  /* no extra gap here */
+      margin-bottom: 0;
     }
 
-    /* Big logo is increased by roughly 10% */
+    /* Big logo increased by roughly 10% */
     .big-logo {
       width: 138px;
       margin-right: 10px;
@@ -152,10 +152,10 @@
       background: rgba(0,0,0,0.05);
     }
 
-    /* The button container is aligned under the URL drop area.
-       Its left margin equals the big logo width plus its right margin (138px + 10px = 148px),
-       so that its contents are centred relative to the URL input.
-       The margin-top is now halved (5px). */
+    /* Button container is aligned under the URL drop area.
+       Its left margin equals the big logo width plus its right margin (138px + 10px = 148px)
+       so that its contents are centered relative to the URL input.
+       Margin-top is now 5px (half of the previous gap). */
     .button-container {
       margin-top: 5px;
       margin-left: 148px;
@@ -277,6 +277,7 @@
       align-items: center;
       justify-content: space-between;
       z-index: 2000;
+      cursor: pointer;
     }
 
     #adBar .ad-content {
@@ -291,13 +292,15 @@
       height: auto;
     }
 
+    /* Styled close button with better visibility */
     #adBar .close-ad {
-      background: transparent;
+      background: rgba(255,255,255,0.2);
       border: none;
       color: #fff;
-      font-size: 20px;
+      font-size: 24px;
       cursor: pointer;
-      padding: 0 5px;
+      padding: 5px 10px;
+      border-radius: 50%;
       line-height: 1;
     }
 
@@ -445,6 +448,13 @@
         showSuggestions(filtered);
       });
 
+      urlInput.addEventListener('keydown', function(e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          openOnQuestButton.click();
+        }
+      });
+
       urlInput.addEventListener('blur', () => {
         setTimeout(() => {
           suggestionsBox.classList.remove('visible');
@@ -465,10 +475,17 @@
       }
     }
 
-    // Close the ad bar when the "X" button is clicked.
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById("closeAd").addEventListener("click", function(){
+    // Banner Ad Bar Event Listeners
+    document.addEventListener('DOMContentLoaded', function(){
+      // Close button: stop propagation and hide the ad bar.
+      document.getElementById("closeAd").addEventListener("click", function(e){
+        e.stopPropagation();
         document.getElementById("adBar").style.display = "none";
+      });
+      // Clicking anywhere on the ad bar (except the close button) opens the URL.
+      document.getElementById("adBar").addEventListener("click", function(e){
+        // The close button click is handled separately.
+        window.open("https://www.nxtwebxr.com", "_blank");
       });
     });
 
