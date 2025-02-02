@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Open on Quest</title>
+  <!-- Prevent caching so that returning to the site refreshes -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-user-drag: none;
+      background: #ffffff;
+    }
+
+    /* ======================================
+       CANVAS WITH RANDOM APPLE-LIKE GRADIENT
+       ====================================== */
+    canvas {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 1;
+      /* The actual background gradient is set via JS,
+         choosing from a random Apple pastel gradient list. */
+    }
+
+    /* ======================================
+       SUBTLE APPLE "POP": GLOW RING
+       ====================================== */
+    .glow-ring {
+      position: absolute;
+      top: 50%; 
+      left: 50%;
+      width: 400px; 
+      height: 400px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      background: radial-gradient(
+          rgba(255,255,255,0.3), 
+          rgba(255,255,255,0.0) 70%
+      );
+      animation: ringFloat 8s ease-in-out infinite alternate;
+      z-index: 2; /* Sits above the canvas, behind UI */
+      mix-blend-mode: screen;
+    }
+
+    @keyframes ringFloat {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1.2);
+      }
+    }
+
+    /* ======================================
+       UI ELEMENTS (unchanged functionality)
+       ====================================== */
+    .input-container {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 400px;
+      z-index: 1000; /* On top of everything */
+    }
+
+    .drop-area {
+      width: 100%;
+      height: 60px;
+      border-radius: 30px;
+      background-color: rgba(255,255,255,0.25);
+      border: none;
+      color: #333;
+      font-size: 18px;
+      text-align: center;
+      line-height: 60px;
+      backdrop-filter: blur(10px);
+      box-shadow:
+        0 2px 3px 1px rgba(180,180,180,0.3),
+        inset 0 -10px 20px -10px rgba(255,255,255,0.9);
+      margin-bottom: 20px;
+      cursor: text;
+      transition: all 1.33s ease;
+      isolation: isolate;
+    }
+
+    .drop-area:focus-within,
+    .drop-area.dragover {
+      transform: scale(1.03);
+      box-shadow: 
+        0 4px 10px -2px rgba(180,180,180,0.4),
+        inset 0 0 0 transparent;
+      transition-duration: 0.665s;
+    }
+
+    .drop-area input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+      outline: none;
+      text-align: center;
+      color: #333;
+      font-size: 18px;
+      font-family: inherit;
+    }
+
+    .suggestions {
+      position: absolute;
+      top: 110px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 9999;
+    }
+
+    .suggestions.visible {
+      display: block;
+    }
+
+    .suggestions div {
+      padding: 10px;
+      font-size: 16px;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .suggestions div:hover {
+      background: rgba(0,0,0,0.05);
+    }
+
+    .styled-button {
+      position: relative;
+      padding: 10px 20px;
+      background-color: rgba(255,255,255,0.25);
+      border: none;
+      border-radius: 30px;
+      font-size: 18px;
+      color: #333;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 1.33s ease;
+      isolation: isolate;
+      box-shadow:
+        0 2px 3px 1px rgba(180,180,180,0.3),
+        inset 0 -10px 20px -10px rgba(255,255,255,0.9);
+      transform: scale(1);
+    }
+
+    .styled-button:hover:not(:active),
+    .styled-button.active {
+      transition-duration: 0.665s;
+      transform: scale(1.2);
+      box-shadow: 
+        0 4px 10px -2px rgba(180,180,180,0.4),
+        inset 0 0 0 transparent;
+    }
+
+    .styled-button:active {
+      transform: scale(1.1);
+      transition-duration: 0.665s;
+    }
+
+    .styled-button .shimmer {
+      position: absolute;
+      inset: -40px;
+      border-radius: inherit;
+      mask-image: conic-gradient(
+          from 0deg,
+          transparent 0%,
+          transparent 10%,
+          black 36%,
+          black 45%,
+          transparent 50%,
+          transparent 60%,
+          black 85%,
+          black 95%,
+          transparent 100%
+      );
+      mask-size: cover;
+      mix-blend-mode: plus-lighter;
+      animation: shimmer 1s linear infinite both;
+    }
+
+    .styled-button .shimmer::before,
+    .styled-button .shimmer::after {
+      transition: all 0.5s ease;
+      opacity: 0;
+      content: "";
+      border-radius: inherit;
+      position: absolute;
+      mix-blend-mode: color;
+      inset: 40px;
+      pointer-events: none;
+    }
+
+    .styled-button .shimmer::before {
+      box-shadow: 0 0 3px 2px rgba(255,255,255,0.7),
+                  0 0 7px 4px rgba(255,255,255,0.5),
+                  0 0 13px 4px rgba(255,255,255,0.4),
+                  0 0 25px 5px rgba(255,255,255,0.4);
+      z-index: -1;
+    }
+
+    .styled-button .shimmer::after {
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6),
+                  inset 0 0 2px 1px rgba(255,255,255,0.4),
+                  inset 0 0 5px 2px rgba(255,255,255,0.3);
+      z-index: 2;
+    }
+
+    .styled-button .text {
+      color: #333;
+    }
+
+    @keyframes shimmer {
+      0% { --shimmer: 0deg; }
+      100% { --shimmer: 360deg; }
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/1.0.2/ua-parser.min.js"></script>
+</head>
+<body>
+  <!-- The canvas for random pastel Apple-like gradients -->
+  <canvas id="canv"></canvas>
+  <!-- Subtle glow ring for an Apple “pop” effect -->
+  <div class="glow-ring"></div>
+
+  <!-- Input and button UI -->
+  <div class="input-container">
+    <div class="drop-area" id="dropArea">
+      <input type="text" id="urlInput" placeholder="Type or drop a URL" autocomplete="off" />
+    </div>
+    <div class="suggestions" id="suggestions"></div>
+    <button id="openOnQuestButton" class="styled-button">
+      <span class="text">Open on Quest</span>
+      <div class="shimmer"></div>
+    </button>
+  </div>
+
+  <script>
+    /*****************************************
+     * LOGIC FOR THE URL INPUT AND LOCALSTORAGE
+     *****************************************/
+    const RECENT_URLS_KEY = 'recentUrls';
+
+    function loadRecentUrls() {
+      let urls = localStorage.getItem(RECENT_URLS_KEY);
+      if (urls) {
+        try {
+          urls = JSON.parse(urls);
+        } catch (e) {
+          urls = [];
+        }
+      } else {
+        urls = [];
+      }
+      return urls;
+    }
+
+    function saveRecentUrl(newUrl) {
+      let urls = loadRecentUrls();
+      // Remove if already exists
+      urls = urls.filter(u => u !== newUrl);
+      // Add to front
+      urls.unshift(newUrl);
+      // Keep only last 3
+      if (urls.length > 3) {
+        urls = urls.slice(0, 3);
+      }
+      localStorage.setItem(RECENT_URLS_KEY, JSON.stringify(urls));
+    }
+
+    function sendLinkToQuest(linkUrl) {
+      let finalUrl = linkUrl.trim();
+      // Auto-add https:// if missing
+      if (!finalUrl.startsWith('https://')) {
+        finalUrl = 'https://' + finalUrl.replace(/^https?:\/\//, '');
+      }
+      const encodedUrl = encodeURIComponent(finalUrl);
+      const webLaunchEndpoint = `https://www.oculus.com/open_url/?url=${encodedUrl}`;
+      saveRecentUrl(finalUrl);
+      window.location.href = webLaunchEndpoint;
+    }
+
+    function isQuestHeadset() {
+      const parser = new UAParser();
+      const result = parser.getResult();
+      const browserName = result.browser.name || '';
+      const deviceModel = result.device.model || '';
+      const isOculusBrowser = browserName.includes('OculusBrowser');
+      const isQuestDevice = deviceModel.includes('Quest');
+      return isOculusBrowser || isQuestDevice;
+    }
+
+    function showSuggestions(filteredUrls) {
+      const suggestionsBox = document.getElementById('suggestions');
+      suggestionsBox.innerHTML = '';
+      if (filteredUrls.length > 0) {
+        filteredUrls.forEach(url => {
+          const div = document.createElement('div');
+          div.textContent = url.replace(/^https?:\/\//, '');
+          div.addEventListener('click', () => {
+            document.getElementById('urlInput').value = url.replace(/^https?:\/\//, '');
+            suggestionsBox.classList.remove('visible');
+          });
+          suggestionsBox.appendChild(div);
+        });
+        suggestionsBox.classList.add('visible');
+      } else {
+        suggestionsBox.classList.remove('visible');
+      }
+    }
+
+    function initializePage() {
+      const dropArea = document.getElementById('dropArea');
+      const urlInput = document.getElementById('urlInput');
+      const openOnQuestButton = document.getElementById('openOnQuestButton');
+      const suggestionsBox = document.getElementById('suggestions');
+
+      // Handle dragging over the drop area
+      dropArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        dropArea.classList.add('dragover');
+      });
+      dropArea.addEventListener('dragleave', function() {
+        dropArea.classList.remove('dragover');
+      });
+      dropArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        dropArea.classList.remove('dragover');
+        const data = e.dataTransfer.getData('text/uri-list') || e.dataTransfer.getData('text/plain');
+        if (data) {
+          urlInput.value = data.replace(/^https?:\/\//, '');
+        }
+      });
+
+      urlInput.addEventListener('input', () => {
+        const inputVal = urlInput.value.trim().toLowerCase();
+        const recentUrls = loadRecentUrls();
+        const filtered = recentUrls.filter(u => u.toLowerCase().includes(inputVal));
+        showSuggestions(filtered);
+      });
+
+      urlInput.addEventListener('blur', () => {
+        setTimeout(() => {
+          suggestionsBox.classList.remove('visible');
+        }, 200);
+      });
+
+      openOnQuestButton.addEventListener('click', function() {
+        const url = urlInput.value.trim();
+        if (url) {
+          sendLinkToQuest(url);
+        } else {
+          alert('Please enter or drop a valid URL.');
+        }
+      });
+
+      if (isQuestHeadset()) {
+        console.log('Page accessed from Meta Quest headset.');
+      }
+    }
+
+    // Force reload if page was restored from cache
+    window.onpageshow = function(event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    };
+
+    /*****************************************
+     * RANDOM APPLE-LIKE BACKGROUND GRADIENTS
+     *****************************************/
+    const gradients = [
+      'linear-gradient(180deg, rgba(255,135,105,1) 0%, rgba(251,195,154,1) 40%, rgba(217,226,255,1) 100%)',
+      'linear-gradient(180deg, #FFAABD, #FFD2AA, #FEFFCB, #D1FFEE)',
+      'linear-gradient(180deg, #FECACA, #FED7E2, #E9D5FF, #CDE4FF)',
+      'linear-gradient(180deg, #FFD4D4, #FFF1D4, #DEFFDC, #D4F9FF)',
+      'linear-gradient(180deg, #FFD6E8, #FFEAD2, #D2EEFF)'
+    ];
+
+    let canvas, ctx;
+
+    function initBackground() {
+      canvas = document.getElementById('canv');
+      ctx = canvas.getContext('2d');
+      resizeCanvas();
+
+      // Pick one random gradient
+      const chosen = gradients[Math.floor(Math.random() * gradients.length)];
+      canvas.style.background = chosen;
+    }
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initializePage();
+      initBackground();
+      window.addEventListener('resize', resizeCanvas, false);
+    });
+  </script>
+</body>
+</html>
