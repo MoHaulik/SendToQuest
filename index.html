@@ -113,16 +113,18 @@
       transition-duration: 0.665s;
     }
 
+    /* --- Modified input style: left-aligned with a small left padding --- */
     .drop-area input {
       width: 100%;
       height: 100%;
       border: none;
       background: transparent;
       outline: none;
-      text-align: center;
+      text-align: left;
       color: #333;
       font-size: 18px;
       font-family: inherit;
+      padding-left: 10px;
     }
 
     .suggestions {
@@ -486,7 +488,12 @@
       'linear-gradient(180deg, #FFD4D4, #FFF1D4, #DEFFDC, #D4F9FF)',
       'linear-gradient(180deg, #FFD6E8, #FFEAD2, #D2EEFF)',
       'linear-gradient(180deg, #A1C4FD, #C2E9FB)',
-      'linear-gradient(180deg, #8EC5FC, #E0C3FC)'
+      'linear-gradient(180deg, #8EC5FC, #E0C3FC)',
+      // --- Additional pastel gradients ---
+      'linear-gradient(180deg, #ffecd2 0%, #fcb69f 100%)',
+      'linear-gradient(180deg, #fbc2eb 0%, #a6c1ee 100%)',
+      'linear-gradient(180deg, #fdcbf1 0%, #e6dee9 100%)',
+      'linear-gradient(180deg, #cfd9df 0%, #e2ebf0 100%)'
     ];
 
     let canvas, ctx;
