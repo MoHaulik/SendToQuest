@@ -70,12 +70,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      /* Increased width to accommodate the big logo and input */
       width: 600px;
-      z-index: 1000; /* On top of everything */
+      z-index: 1000;
     }
 
-    /* New flex container for the big logo and input field */
     .input-row {
       display: flex;
       align-items: center;
@@ -83,13 +81,11 @@
       margin-bottom: 20px;
     }
 
-    /* Big logo to the left of the input */
     .big-logo {
-      width: 100px; /* Adjust size as needed */
+      width: 125px; /* Increased 25% from 100px */
       margin-right: 20px;
     }
 
-    /* Let the drop area take the remaining space */
     .drop-area {
       flex: 1;
       height: 60px;
@@ -157,6 +153,12 @@
       background: rgba(0,0,0,0.05);
     }
 
+    .button-container {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
     .styled-button {
       position: relative;
       padding: 10px 20px;
@@ -173,7 +175,6 @@
         0 2px 3px 1px rgba(180,180,180,0.3),
         inset 0 -10px 20px -10px rgba(255,255,255,0.9);
       transform: scale(1);
-      /* Added flex styling for aligning text and small logo */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -248,14 +249,9 @@
       z-index: 3;
     }
 
-    /* Small logo inside the button */
-    .styled-button .small-logo {
-      width: 24px; /* Adjust size as needed */
+    .small-logo {
+      width: 30px; /* Increased 25% from 24px */
       height: auto;
-      margin-left: 10px;
-      vertical-align: middle;
-      position: relative;
-      z-index: 3;
     }
 
     @keyframes shimmer {
@@ -280,11 +276,13 @@
       </div>
     </div>
     <div class="suggestions" id="suggestions"></div>
-    <button id="openOnQuestButton" class="styled-button">
-      <span class="text">Open on Quest</span>
+    <div class="button-container">
+      <button id="openOnQuestButton" class="styled-button">
+        <span class="text">Send to Quest</span>
+        <div class="shimmer"></div>
+      </button>
       <img src="SendToQuest2.png" alt="Send to Quest Small Logo" class="small-logo" />
-      <div class="shimmer"></div>
-    </button>
+    </div>
   </div>
 
   <script>
