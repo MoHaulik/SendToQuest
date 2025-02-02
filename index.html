@@ -70,7 +70,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 600px;
+      width: 600px; /* fixed layout width */
       z-index: 1000;
     }
 
@@ -78,12 +78,13 @@
       display: flex;
       align-items: center;
       width: 100%;
-      margin-bottom: 10px; /* Reduced vertical gap */
+      margin-bottom: 0;  /* removed extra gap so the button can sit closer */
     }
 
+    /* Big logo is now about 10% bigger */
     .big-logo {
-      width: 125px; /* 25% larger than the original 100px */
-      margin-right: 10px; /* Less distance to the URL bar */
+      width: 138px;
+      margin-right: 10px;
     }
 
     .drop-area {
@@ -153,12 +154,17 @@
       background: rgba(0,0,0,0.05);
     }
 
+    /* The button container is now aligned with the URL drop area.
+       The left margin equals the width of the big logo plus its right margin (138px + 10px = 148px),
+       and its width is the remaining space of the 600px container. */
     .button-container {
+      margin-top: 10px; /* gap reduced by 50 compared to earlier versions */
+      margin-left: 148px;
+      width: calc(100% - 148px);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px; /* Reduced gap between button and small logo */
-      margin-top: 10px; /* Reduced vertical spacing from the URL bar */
+      gap: 10px;
     }
 
     .styled-button {
@@ -251,8 +257,9 @@
       z-index: 3;
     }
 
+    /* The small logo (SendToQuest2.png) is set to 60px wide */
     .small-logo {
-      width: 60px; /* Double the previous small logo size */
+      width: 60px;
       height: auto;
     }
 
