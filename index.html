@@ -26,8 +26,6 @@
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
       z-index: 1;
-      /* The actual background gradient is set via JS,
-         choosing from a random Apple pastel gradient list. */
     }
 
     /* ======================================
@@ -47,7 +45,7 @@
           rgba(255,255,255,0.0) 70%
       );
       animation: ringFloat 8s ease-in-out infinite alternate;
-      z-index: 2; /* Sits above the canvas, behind UI */
+      z-index: 2;
       mix-blend-mode: screen;
     }
 
@@ -78,10 +76,10 @@
       display: flex;
       align-items: center;
       width: 100%;
-      margin-bottom: 0;  /* removed extra gap so the button can sit closer */
+      margin-bottom: 0;  /* no extra gap here */
     }
 
-    /* Big logo is now about 10% bigger */
+    /* Big logo is increased by roughly 10% */
     .big-logo {
       width: 138px;
       margin-right: 10px;
@@ -154,11 +152,12 @@
       background: rgba(0,0,0,0.05);
     }
 
-    /* The button container is now aligned with the URL drop area.
-       The left margin equals the width of the big logo plus its right margin (138px + 10px = 148px),
-       and its width is the remaining space of the 600px container. */
+    /* The button container is aligned under the URL drop area.
+       Its left margin equals the big logo width plus its right margin (138px + 10px = 148px),
+       so that its contents are centred relative to the URL input.
+       The margin-top is now halved (5px). */
     .button-container {
-      margin-top: 10px; /* gap reduced by 50 compared to earlier versions */
+      margin-top: 5px;
       margin-left: 148px;
       width: calc(100% - 148px);
       display: flex;
@@ -257,10 +256,49 @@
       z-index: 3;
     }
 
-    /* The small logo (SendToQuest2.png) is set to 60px wide */
+    /* The small logo remains 60px wide */
     .small-logo {
       width: 60px;
       height: auto;
+    }
+
+    /* ======================================
+       BANNER AD BAR AT THE BOTTOM
+       ====================================== */
+    #adBar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(0,0,0,0.8);
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 2000;
+    }
+
+    #adBar .ad-content {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 16px;
+    }
+
+    #adBar .ad-content img {
+      width: 40px;
+      height: auto;
+    }
+
+    #adBar .close-ad {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 0 5px;
+      line-height: 1;
     }
 
     @keyframes shimmer {
@@ -292,6 +330,15 @@
       </button>
       <img src="SendToQuest2.png" alt="Send to Quest Small Logo" class="small-logo" />
     </div>
+  </div>
+
+  <!-- Banner Ad Bar -->
+  <div id="adBar">
+    <div class="ad-content">
+      <img src="NXTlogo.png" alt="NXT Logo" />
+      <span>Explore and play free VR games now</span>
+    </div>
+    <button id="closeAd" class="close-ad">X</button>
   </div>
 
   <script>
@@ -417,6 +464,13 @@
         console.log('Page accessed from Meta Quest headset.');
       }
     }
+
+    // Close the ad bar when the "X" button is clicked.
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById("closeAd").addEventListener("click", function(){
+        document.getElementById("adBar").style.display = "none";
+      });
+    });
 
     // Force reload if page was restored from cache
     window.onpageshow = function(event) {
