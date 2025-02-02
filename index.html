@@ -20,7 +20,7 @@
     }
 
     /* ======================================
-       CANVAS WITH RANDOM APPLE-LIKE GRADIENT
+       CANVAS WITH RANDOM APPLE-LIKE GRADIENTS
        ====================================== */
     canvas {
       position: absolute;
@@ -263,7 +263,7 @@
     }
 
     /* ======================================
-       BANNER AD BAR AT THE BOTTOM
+       BANNER AD BAR AT THE BOTTOM (No Close Option)
        ====================================== */
     #adBar {
       position: fixed;
@@ -290,18 +290,6 @@
     #adBar .ad-content img {
       width: 40px;
       height: auto;
-    }
-
-    /* Styled close button with better visibility */
-    #adBar .close-ad {
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: #fff;
-      font-size: 24px;
-      cursor: pointer;
-      padding: 5px 10px;
-      border-radius: 50%;
-      line-height: 1;
     }
 
     @keyframes shimmer {
@@ -335,13 +323,12 @@
     </div>
   </div>
 
-  <!-- Banner Ad Bar -->
+  <!-- Banner Ad Bar (clickable) -->
   <div id="adBar">
     <div class="ad-content">
       <img src="NXTlogo.png" alt="NXT Logo" />
       <span>Explore and play free VR games now</span>
     </div>
-    <button id="closeAd" class="close-ad">X</button>
   </div>
 
   <script>
@@ -475,16 +462,9 @@
       }
     }
 
-    // Banner Ad Bar Event Listeners
+    // Banner Ad Bar: Clicking anywhere opens the link.
     document.addEventListener('DOMContentLoaded', function(){
-      // Close button: stop propagation and hide the ad bar.
-      document.getElementById("closeAd").addEventListener("click", function(e){
-        e.stopPropagation();
-        document.getElementById("adBar").style.display = "none";
-      });
-      // Clicking anywhere on the ad bar (except the close button) opens the URL.
       document.getElementById("adBar").addEventListener("click", function(e){
-        // The close button click is handled separately.
         window.open("https://www.nxtwebxr.com", "_blank");
       });
     });
@@ -504,7 +484,9 @@
       'linear-gradient(180deg, #FFAABD, #FFD2AA, #FEFFCB, #D1FFEE)',
       'linear-gradient(180deg, #FECACA, #FED7E2, #E9D5FF, #CDE4FF)',
       'linear-gradient(180deg, #FFD4D4, #FFF1D4, #DEFFDC, #D4F9FF)',
-      'linear-gradient(180deg, #FFD6E8, #FFEAD2, #D2EEFF)'
+      'linear-gradient(180deg, #FFD6E8, #FFEAD2, #D2EEFF)',
+      'linear-gradient(180deg, #A1C4FD, #C2E9FB)',
+      'linear-gradient(180deg, #8EC5FC, #E0C3FC)'
     ];
 
     let canvas, ctx;
