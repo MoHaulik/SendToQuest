@@ -7,6 +7,11 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
+  
+  <!-- Favicon for all browsers -->
+  <link rel="icon" type="image/png" href="SendToQuest2.png">
+  <link rel="shortcut icon" type="image/png" href="SendToQuest2.png">
+  
   <style>
     html, body {
       margin: 0;
@@ -18,7 +23,7 @@
       -webkit-user-drag: none;
       background: #ffffff;
     }
-
+    
     /* ======================================
        CANVAS WITH RANDOM APPLE-LIKE GRADIENTS
        ====================================== */
@@ -27,7 +32,7 @@
       top: 0; left: 0; right: 0; bottom: 0;
       z-index: 1;
     }
-
+    
     /* ======================================
        SUBTLE APPLE "POP": GLOW RING
        ====================================== */
@@ -48,7 +53,7 @@
       z-index: 2;
       mix-blend-mode: screen;
     }
-
+    
     @keyframes ringFloat {
       0% {
         transform: translate(-50%, -50%) scale(1);
@@ -57,7 +62,7 @@
         transform: translate(-50%, -50%) scale(1.2);
       }
     }
-
+    
     /* ======================================
        UI ELEMENTS
        ====================================== */
@@ -71,20 +76,20 @@
       width: 600px; /* fixed layout width */
       z-index: 1000;
     }
-
+    
     .input-row {
       display: flex;
       align-items: center;
       width: 100%;
       margin-bottom: 0;
     }
-
+    
     /* Big logo increased by roughly 10% */
     .big-logo {
       width: 138px;
       margin-right: 10px;
     }
-
+    
     .drop-area {
       flex: 1;
       height: 60px;
@@ -103,7 +108,7 @@
       transition: all 1.33s ease;
       isolation: isolate;
     }
-
+    
     .drop-area:focus-within,
     .drop-area.dragover {
       transform: scale(1.03);
@@ -112,12 +117,12 @@
         inset 0 0 0 transparent;
       transition-duration: 0.665s;
     }
-
+    
     /* --------------------------------------------------------
        URL INPUT STYLE
        --------------------------------------------------------
        Adjust the padding-left value below to shift the text
-       to the right. Increase the value to move it further right.
+       to the right. (New value: 116px)
     --------------------------------------------------------- */
     .drop-area input {
       width: 100%;
@@ -129,9 +134,9 @@
       color: #333;
       font-size: 18px;
       font-family: inherit;
-      padding-left: 118px; /* <-- Adjust this value to move the text right */
+      padding-left: 116px; /* <-- Adjust this value if needed */
     }
-
+    
     .suggestions {
       position: absolute;
       top: 110px;
@@ -143,22 +148,22 @@
       display: none;
       z-index: 9999;
     }
-
+    
     .suggestions.visible {
       display: block;
     }
-
+    
     .suggestions div {
       padding: 10px;
       font-size: 16px;
       color: #333;
       cursor: pointer;
     }
-
+    
     .suggestions div:hover {
       background: rgba(0,0,0,0.05);
     }
-
+    
     /* Button container is aligned under the URL drop area.
        Its left margin equals the big logo width plus its right margin (138px + 10px = 148px)
        so that its contents are centered relative to the URL input.
@@ -172,7 +177,7 @@
       justify-content: center;
       gap: 10px;
     }
-
+    
     .styled-button {
       position: relative;
       padding: 10px 20px;
@@ -194,7 +199,7 @@
       justify-content: center;
       gap: 10px;
     }
-
+    
     .styled-button:hover:not(:active),
     .styled-button.active {
       transition-duration: 0.665s;
@@ -203,12 +208,12 @@
         0 4px 10px -2px rgba(180,180,180,0.4),
         inset 0 0 0 transparent;
     }
-
+    
     .styled-button:active {
       transform: scale(1.1);
       transition-duration: 0.665s;
     }
-
+    
     .styled-button .shimmer {
       position: absolute;
       inset: -40px;
@@ -229,7 +234,7 @@
       mix-blend-mode: plus-lighter;
       animation: shimmer 1s linear infinite both;
     }
-
+    
     .styled-button .shimmer::before,
     .styled-button .shimmer::after {
       transition: all 0.5s ease;
@@ -241,7 +246,7 @@
       inset: 40px;
       pointer-events: none;
     }
-
+    
     .styled-button .shimmer::before {
       box-shadow: 0 0 3px 2px rgba(255,255,255,0.7),
                   0 0 7px 4px rgba(255,255,255,0.5),
@@ -249,26 +254,26 @@
                   0 0 25px 5px rgba(255,255,255,0.4);
       z-index: -1;
     }
-
+    
     .styled-button .shimmer::after {
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6),
                   inset 0 0 2px 1px rgba(255,255,255,0.4),
                   inset 0 0 5px 2px rgba(255,255,255,0.3);
       z-index: 2;
     }
-
+    
     .styled-button .text {
       color: #333;
       position: relative;
       z-index: 3;
     }
-
+    
     /* The small logo remains 60px wide */
     .small-logo {
       width: 60px;
       height: auto;
     }
-
+    
     /* ======================================
        BANNER AD BAR AT THE BOTTOM (No Close Option)
        ====================================== */
@@ -286,19 +291,34 @@
       z-index: 2000;
       cursor: pointer;
     }
-
+    
     #adBar .ad-content {
       display: flex;
       align-items: center;
       gap: 15px;
       font-size: 16px;
     }
-
+    
     #adBar .ad-content img {
       width: 40px;
       height: auto;
     }
-
+    
+    /* ======================================
+       GRADIENT CODE DISPLAY (for dev purposes)
+       ====================================== */
+    #gradient-code {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      font-size: 14px;
+      color: #333;
+      background: rgba(255,255,255,0.6);
+      padding: 5px 10px;
+      border-radius: 5px;
+      z-index: 3000;
+    }
+    
     @keyframes shimmer {
       0% { --shimmer: 0deg; }
       100% { --shimmer: 360deg; }
@@ -311,7 +331,7 @@
   <canvas id="canv"></canvas>
   <!-- Subtle glow ring for an Apple “pop” effect -->
   <div class="glow-ring"></div>
-
+  
   <!-- Input and button UI with logos -->
   <div class="input-container">
     <div class="input-row">
@@ -329,7 +349,7 @@
       <img src="SendToQuest2.png" alt="Send to Quest Small Logo" class="small-logo" />
     </div>
   </div>
-
+  
   <!-- Banner Ad Bar (clickable) -->
   <div id="adBar">
     <div class="ad-content">
@@ -337,13 +357,16 @@
       <span>Explore and play free VR games now</span>
     </div>
   </div>
-
+  
+  <!-- Gradient Code Display (for dev purposes) -->
+  <div id="gradient-code"></div>
+  
   <script>
     /*****************************************
      * LOGIC FOR THE URL INPUT AND LOCALSTORAGE
      *****************************************/
     const RECENT_URLS_KEY = 'recentUrls';
-
+    
     function loadRecentUrls() {
       let urls = localStorage.getItem(RECENT_URLS_KEY);
       if (urls) {
@@ -357,7 +380,7 @@
       }
       return urls;
     }
-
+    
     function saveRecentUrl(newUrl) {
       let urls = loadRecentUrls();
       // Remove if already exists
@@ -370,7 +393,7 @@
       }
       localStorage.setItem(RECENT_URLS_KEY, JSON.stringify(urls));
     }
-
+    
     function sendLinkToQuest(linkUrl) {
       let finalUrl = linkUrl.trim();
       // Auto-add https:// if missing
@@ -382,7 +405,7 @@
       saveRecentUrl(finalUrl);
       window.location.href = webLaunchEndpoint;
     }
-
+    
     function isQuestHeadset() {
       const parser = new UAParser();
       const result = parser.getResult();
@@ -392,7 +415,7 @@
       const isQuestDevice = deviceModel.includes('Quest');
       return isOculusBrowser || isQuestDevice;
     }
-
+    
     function showSuggestions(filteredUrls) {
       const suggestionsBox = document.getElementById('suggestions');
       suggestionsBox.innerHTML = '';
@@ -411,13 +434,13 @@
         suggestionsBox.classList.remove('visible');
       }
     }
-
+    
     function initializePage() {
       const dropArea = document.getElementById('dropArea');
       const urlInput = document.getElementById('urlInput');
       const openOnQuestButton = document.getElementById('openOnQuestButton');
       const suggestionsBox = document.getElementById('suggestions');
-
+      
       // Handle dragging over the drop area
       dropArea.addEventListener('dragover', function(e) {
         e.preventDefault();
@@ -434,27 +457,27 @@
           urlInput.value = data.replace(/^https?:\/\//, '');
         }
       });
-
+      
       urlInput.addEventListener('input', () => {
         const inputVal = urlInput.value.trim().toLowerCase();
         const recentUrls = loadRecentUrls();
         const filtered = recentUrls.filter(u => u.toLowerCase().includes(inputVal));
         showSuggestions(filtered);
       });
-
+      
       urlInput.addEventListener('keydown', function(e) {
         if (e.key === "Enter") {
           e.preventDefault();
           openOnQuestButton.click();
         }
       });
-
+      
       urlInput.addEventListener('blur', () => {
         setTimeout(() => {
           suggestionsBox.classList.remove('visible');
         }, 200);
       });
-
+      
       openOnQuestButton.addEventListener('click', function() {
         const url = urlInput.value.trim();
         if (url) {
@@ -463,61 +486,76 @@
           alert('Please enter or drop a valid URL.');
         }
       });
-
+      
       if (isQuestHeadset()) {
         console.log('Page accessed from Meta Quest headset.');
       }
     }
-
+    
     // Banner Ad Bar: Clicking anywhere opens the link.
     document.addEventListener('DOMContentLoaded', function(){
       document.getElementById("adBar").addEventListener("click", function(e){
         window.open("https://www.nxtwebxr.com", "_blank");
       });
     });
-
+    
     // Force reload if page was restored from cache
     window.onpageshow = function(event) {
       if (event.persisted) {
         window.location.reload();
       }
     };
-
+    
     /*****************************************
      * RANDOM APPLE-LIKE BACKGROUND GRADIENTS
      *****************************************/
+    // Gradients array: each object includes a code number and a gradient value.
     const gradients = [
-      'linear-gradient(180deg, rgba(255,135,105,1) 0%, rgba(251,195,154,1) 40%, rgba(217,226,255,1) 100%)',
-      'linear-gradient(180deg, #FFAABD, #FFD2AA, #FEFFCB, #D1FFEE)',
-      'linear-gradient(180deg, #FECACA, #FED7E2, #E9D5FF, #CDE4FF)',
-      'linear-gradient(180deg, #FFD4D4, #FFF1D4, #DEFFDC, #D4F9FF)',
-      'linear-gradient(180deg, #FFD6E8, #FFEAD2, #D2EEFF)',
-      'linear-gradient(180deg, #A1C4FD, #C2E9FB)',
-      'linear-gradient(180deg, #8EC5FC, #E0C3FC)',
-      // --- Additional pastel gradients ---
-      'linear-gradient(180deg, #ffecd2 0%, #fcb69f 100%)',
-      'linear-gradient(180deg, #fbc2eb 0%, #a6c1ee 100%)',
-      'linear-gradient(180deg, #fdcbf1 0%, #e6dee9 100%)',
-      'linear-gradient(180deg, #cfd9df 0%, #e2ebf0 100%)'
+      { code: 1, gradient: 'linear-gradient(180deg, rgba(255,135,105,1) 0%, rgba(251,195,154,1) 40%, rgba(217,226,255,1) 100%)' },
+      { code: 2, gradient: 'linear-gradient(180deg, #FFAABD, #FFD2AA, #FEFFCB, #D1FFEE)' },
+      { code: 3, gradient: 'linear-gradient(180deg, #FECACA, #FED7E2, #E9D5FF, #CDE4FF)' },
+      { code: 4, gradient: 'linear-gradient(180deg, #FFD4D4, #FFF1D4, #DEFFDC, #D4F9FF)' },
+      { code: 5, gradient: 'linear-gradient(180deg, #FFD6E8, #FFEAD2, #D2EEFF)' },
+      { code: 6, gradient: 'linear-gradient(180deg, #A1C4FD, #C2E9FB)' },
+      { code: 7, gradient: 'linear-gradient(180deg, #8EC5FC, #E0C3FC)' },
+      { code: 8, gradient: 'linear-gradient(180deg, #ffecd2 0%, #fcb69f 100%)' },
+      { code: 9, gradient: 'linear-gradient(180deg, #fbc2eb 0%, #a6c1ee 100%)' },
+      { code: 10, gradient: 'linear-gradient(180deg, #fdcbf1 0%, #e6dee9 100%)' },
+      { code: 11, gradient: 'linear-gradient(180deg, #cfd9df 0%, #e2ebf0 100%)' },
+      // 10 NEW gradients:
+      { code: 12, gradient: 'linear-gradient(180deg, #ff9a9e 0%, #fad0c4 100%)' },
+      { code: 13, gradient: 'linear-gradient(180deg, #a18cd1 0%, #fbc2eb 100%)' },
+      { code: 14, gradient: 'linear-gradient(180deg, #f6d365 0%, #fda085 100%)' },
+      { code: 15, gradient: 'linear-gradient(180deg, #84fab0 0%, #8fd3f4 100%)' },
+      { code: 16, gradient: 'linear-gradient(180deg, #ffdde1 0%, #ee9ca7 100%)' },
+      { code: 17, gradient: 'linear-gradient(180deg, #c9ffbf 0%, #ffafbd 100%)' },
+      { code: 18, gradient: 'linear-gradient(180deg, #ffefd5 0%, #ffe4e1 100%)' },
+      { code: 19, gradient: 'linear-gradient(180deg, #e6dada 0%, #274046 100%)' },
+      { code: 20, gradient: 'linear-gradient(180deg, #d4fc79 0%, #96e6a1 100%)' },
+      { code: 21, gradient: 'linear-gradient(180deg, #a8c0ff 0%, #3f2b96 100%)' }
     ];
-
+    
     let canvas, ctx;
-
+    
     function initBackground() {
       canvas = document.getElementById('canv');
       ctx = canvas.getContext('2d');
       resizeCanvas();
-
-      // Pick one random gradient
+      
+      // Pick one random gradient object
       const chosen = gradients[Math.floor(Math.random() * gradients.length)];
-      canvas.style.background = chosen;
+      canvas.style.background = chosen.gradient;
+      
+      // Update the gradient code display for development purposes
+      const gradientCodeDisplay = document.getElementById('gradient-code');
+      gradientCodeDisplay.textContent = 'Gradient Code: ' + chosen.code;
     }
-
+    
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     }
-
+    
     document.addEventListener('DOMContentLoaded', () => {
       initializePage();
       initBackground();
