@@ -8,6 +8,9 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   
+  <!-- Viewport meta tag for mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
   <!-- Favicon for all browsers -->
   <link rel="icon" type="image/png" href="SendToQuest2.png">
   <link rel="shortcut icon" type="image/png" href="SendToQuest2.png">
@@ -431,7 +434,7 @@
       localStorage.setItem(RECENT_URLS_KEY, JSON.stringify(urls));
     }
     
-    // UPDATED: Play sound effect from "sent.mp3" (1 second long) before redirecting.
+    // Play sound effect (sent.mp3) before redirecting.
     function sendLinkToQuest(linkUrl) {
       let finalUrl = linkUrl.trim();
       // Auto-add https:// if missing
@@ -442,7 +445,7 @@
       const webLaunchEndpoint = `https://www.oculus.com/open_url/?url=${encodedUrl}`;
       saveRecentUrl(finalUrl);
       
-      // Play the sent.mp3 sound effect before redirecting.
+      // Play the sent.mp3 sound effect (1 second long) then redirect.
       const audio = new Audio('sent.mp3');
       audio.play();
       setTimeout(() => {
