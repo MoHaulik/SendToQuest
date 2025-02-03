@@ -304,21 +304,6 @@
       height: auto;
     }
     
-    /* ======================================
-       GRADIENT CODE DISPLAY (for dev purposes)
-       ====================================== */
-    #gradient-code {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      font-size: 14px;
-      color: #333;
-      background: rgba(255,255,255,0.6);
-      padding: 5px 10px;
-      border-radius: 5px;
-      z-index: 3000;
-    }
-    
     @keyframes shimmer {
       0% { --shimmer: 0deg; }
       100% { --shimmer: 360deg; }
@@ -357,9 +342,6 @@
       <span>Explore and play free VR games now</span>
     </div>
   </div>
-  
-  <!-- Gradient Code Display (for dev purposes) -->
-  <div id="gradient-code"></div>
   
   <script>
     /*****************************************
@@ -509,31 +491,33 @@
     /*****************************************
      * RANDOM APPLE-LIKE BACKGROUND GRADIENTS
      *****************************************/
-    // Gradients array: each object includes a code number and a gradient value.
-    const gradients = [
-      { code: 1, gradient: 'linear-gradient(180deg, rgba(255,135,105,1) 0%, rgba(251,195,154,1) 40%, rgba(217,226,255,1) 100%)' },
+    // Allowed gradients only
+    const allowedGradients = [
       { code: 2, gradient: 'linear-gradient(180deg, #FFAABD, #FFD2AA, #FEFFCB, #D1FFEE)' },
       { code: 3, gradient: 'linear-gradient(180deg, #FECACA, #FED7E2, #E9D5FF, #CDE4FF)' },
       { code: 4, gradient: 'linear-gradient(180deg, #FFD4D4, #FFF1D4, #DEFFDC, #D4F9FF)' },
       { code: 5, gradient: 'linear-gradient(180deg, #FFD6E8, #FFEAD2, #D2EEFF)' },
-      { code: 6, gradient: 'linear-gradient(180deg, #A1C4FD, #C2E9FB)' },
       { code: 7, gradient: 'linear-gradient(180deg, #8EC5FC, #E0C3FC)' },
       { code: 8, gradient: 'linear-gradient(180deg, #ffecd2 0%, #fcb69f 100%)' },
       { code: 9, gradient: 'linear-gradient(180deg, #fbc2eb 0%, #a6c1ee 100%)' },
       { code: 10, gradient: 'linear-gradient(180deg, #fdcbf1 0%, #e6dee9 100%)' },
-      { code: 11, gradient: 'linear-gradient(180deg, #cfd9df 0%, #e2ebf0 100%)' },
-      // 10 NEW gradients:
       { code: 12, gradient: 'linear-gradient(180deg, #ff9a9e 0%, #fad0c4 100%)' },
-      { code: 13, gradient: 'linear-gradient(180deg, #a18cd1 0%, #fbc2eb 100%)' },
-      { code: 14, gradient: 'linear-gradient(180deg, #f6d365 0%, #fda085 100%)' },
-      { code: 15, gradient: 'linear-gradient(180deg, #84fab0 0%, #8fd3f4 100%)' },
       { code: 16, gradient: 'linear-gradient(180deg, #ffdde1 0%, #ee9ca7 100%)' },
-      { code: 17, gradient: 'linear-gradient(180deg, #c9ffbf 0%, #ffafbd 100%)' },
-      { code: 18, gradient: 'linear-gradient(180deg, #ffefd5 0%, #ffe4e1 100%)' },
-      { code: 19, gradient: 'linear-gradient(180deg, #e6dada 0%, #274046 100%)' },
-      { code: 20, gradient: 'linear-gradient(180deg, #d4fc79 0%, #96e6a1 100%)' },
-      { code: 21, gradient: 'linear-gradient(180deg, #a8c0ff 0%, #3f2b96 100%)' }
+      { code: 18, gradient: 'linear-gradient(180deg, #ffefd5 0%, #ffe4e1 100%)' }
     ];
+    
+    // Create a weighted array giving code 9 extra chance
+    let weightedGradients = [];
+    allowedGradients.forEach(g => {
+      if (g.code === 9) {
+        // Multiply code 9 five times (adjust multiplier as needed)
+        for (let i = 0; i < 5; i++) {
+          weightedGradients.push(g);
+        }
+      } else {
+        weightedGradients.push(g);
+      }
+    });
     
     let canvas, ctx;
     
@@ -542,13 +526,9 @@
       ctx = canvas.getContext('2d');
       resizeCanvas();
       
-      // Pick one random gradient object
-      const chosen = gradients[Math.floor(Math.random() * gradients.length)];
+      // Select a random gradient from the weighted array
+      const chosen = weightedGradients[Math.floor(Math.random() * weightedGradients.length)];
       canvas.style.background = chosen.gradient;
-      
-      // Update the gradient code display for development purposes
-      const gradientCodeDisplay = document.getElementById('gradient-code');
-      gradientCodeDisplay.textContent = 'Gradient Code: ' + chosen.code;
     }
     
     function resizeCanvas() {
