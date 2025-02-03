@@ -64,7 +64,7 @@
     }
     
     /* ======================================
-       UI ELEMENTS
+       UI ELEMENTS (Desktop/Tablet Layout)
        ====================================== */
     .input-container {
       position: absolute;
@@ -84,7 +84,7 @@
       margin-bottom: 0;
     }
     
-    /* Big logo increased by roughly 10% */
+    /* Big logo (SendToQuest.png) */
     .big-logo {
       width: 138px;
       margin-right: 10px;
@@ -119,10 +119,9 @@
     }
     
     /* --------------------------------------------------------
-       URL INPUT STYLE
+       URL INPUT STYLE (Desktop)
        --------------------------------------------------------
-       Adjust the padding-left value below to shift the text
-       to the right. (New value: 116px)
+       The padding-left value is set to 116px per design.
     --------------------------------------------------------- */
     .drop-area input {
       width: 100%;
@@ -134,7 +133,7 @@
       color: #333;
       font-size: 18px;
       font-family: inherit;
-      padding-left: 116px; /* <-- Adjust this value if needed */
+      padding-left: 116px; /* For desktop/tablet */
     }
     
     .suggestions {
@@ -164,10 +163,7 @@
       background: rgba(0,0,0,0.05);
     }
     
-    /* Button container is aligned under the URL drop area.
-       Its left margin equals the big logo width plus its right margin (138px + 10px = 148px)
-       so that its contents are centered relative to the URL input.
-       Margin-top is now 5px (half of the previous gap). */
+    /* Button container (Desktop) */
     .button-container {
       margin-top: 5px;
       margin-left: 148px;
@@ -268,14 +264,14 @@
       z-index: 3;
     }
     
-    /* The small logo remains 60px wide */
+    /* The small logo (SendToQuest2.png) */
     .small-logo {
       width: 60px;
       height: auto;
     }
     
     /* ======================================
-       BANNER AD BAR AT THE BOTTOM (No Close Option)
+       BANNER AD BAR AT THE BOTTOM (Desktop)
        ====================================== */
     #adBar {
       position: fixed;
@@ -307,6 +303,65 @@
     @keyframes shimmer {
       0% { --shimmer: 0deg; }
       100% { --shimmer: 360deg; }
+    }
+    
+    /* =====================================================
+       MOBILE PHONE Portrait Mode Adjustments
+       (Applies only when the viewport is narrow and in portrait)
+       ===================================================== */
+    @media only screen and (max-width: 480px) and (orientation: portrait) {
+      /* Make the container full-width and position near the top */
+      .input-container {
+         width: 90%;
+         position: relative;
+         top: 20px;
+         left: 50%;
+         transform: translateX(-50%);
+         text-align: center;
+      }
+      /* Stack the items vertically */
+      .input-row {
+         flex-direction: column;
+         align-items: center;
+         margin-bottom: 20px;
+      }
+      /* Center the big logo */
+      .big-logo {
+         margin: 0 auto 20px auto;
+         width: 150px; /* Increase size if desired */
+      }
+      /* Full-width URL bar with centered text */
+      .drop-area {
+         width: 100%;
+         margin-bottom: 20px;
+         font-size: 20px;
+         line-height: 60px;
+      }
+      .drop-area input {
+         text-align: center;
+         padding-left: 0; /* Remove extra padding for centered text */
+      }
+      /* Stack the button and small logo vertically */
+      .button-container {
+         flex-direction: column;
+         align-items: center;
+         margin-left: 0;
+         width: 100%;
+      }
+      .styled-button {
+         width: 100%;
+         margin-bottom: 20px;
+      }
+      .small-logo {
+         display: block;
+         margin: 0 auto;
+      }
+      /* Make the banner ad taller and use a larger font */
+      #adBar {
+         padding: 20px;
+         font-size: 18px;
+         height: auto;
+      }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/1.0.2/ua-parser.min.js"></script>
@@ -376,6 +431,7 @@
       localStorage.setItem(RECENT_URLS_KEY, JSON.stringify(urls));
     }
     
+    // UPDATED: Play sound effect from "sent.mp3" (1 second long) before redirecting.
     function sendLinkToQuest(linkUrl) {
       let finalUrl = linkUrl.trim();
       // Auto-add https:// if missing
@@ -385,7 +441,13 @@
       const encodedUrl = encodeURIComponent(finalUrl);
       const webLaunchEndpoint = `https://www.oculus.com/open_url/?url=${encodedUrl}`;
       saveRecentUrl(finalUrl);
-      window.location.href = webLaunchEndpoint;
+      
+      // Play the sent.mp3 sound effect before redirecting.
+      const audio = new Audio('sent.mp3');
+      audio.play();
+      setTimeout(() => {
+        window.location.href = webLaunchEndpoint;
+      }, 1000);
     }
     
     function isQuestHeadset() {
