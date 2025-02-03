@@ -113,7 +113,12 @@
       transition-duration: 0.665s;
     }
 
-    /* --- Modified input style: remove left padding so its text aligns with the button row --- */
+    /* --------------------------------------------------------
+       URL INPUT STYLE
+       --------------------------------------------------------
+       Adjust the padding-left value below to shift the text
+       to the right. Increase the value to move it further right.
+    --------------------------------------------------------- */
     .drop-area input {
       width: 100%;
       height: 100%;
@@ -124,8 +129,7 @@
       color: #333;
       font-size: 18px;
       font-family: inherit;
-      padding-left: 0;  /* Changed from 10px to 0 */
-      /* If further fine-tuning is needed, try: margin-left: -2px; */
+      padding-left: 10px; /* <-- Adjust this value to move the text right */
     }
 
     .suggestions {
