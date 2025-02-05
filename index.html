@@ -359,9 +359,11 @@
          width: 100%;
          margin-bottom: 20px;
       }
+      /* Adjust the small logo to appear below the button with a smaller size */
       .small-logo {
          display: block;
-         margin: 0 auto;
+         margin: 10px auto 0 auto;
+         width: 50px;
       }
       /* Make the banner ad taller and use a larger font */
       #adBar {
@@ -525,7 +527,7 @@
       
       urlInput.addEventListener('blur', () => {
         setTimeout(() => {
-          suggestionsBox.classList.remove('visible');
+          suggestions.classList.remove('visible');
         }, 200);
       });
       
