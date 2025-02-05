@@ -313,11 +313,15 @@
        (Applies only when the viewport is narrow and in portrait)
        ===================================================== */
     @media only screen and (max-width: 480px) and (orientation: portrait) {
-      /* Make the container full-width and position near the top */
+      /* Allow scrolling when keyboard is open */
+      html, body {
+        overflow: auto;
+      }
+      /* Make the container full-width and position lower on the screen */
       .input-container {
          width: 90%;
          position: relative;
-         top: 20px;
+         top: 80px; /* Increased from 20px to create more space above the logo */
          left: 50%;
          transform: translateX(-50%);
          text-align: center;
