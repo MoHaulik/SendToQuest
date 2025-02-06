@@ -359,12 +359,18 @@
          width: 100%;
          margin-bottom: 20px;
       }
-      /* Adjust the small logo for mobile: smaller size and spacing below the button */
+      /* Adjust the small logo for mobile:
+         - Smaller size than desktop
+         - Large top margin for extra spacing from the button
+         - High z-index to ensure it stays on top
+      */
       .small-logo {
          display: block;
-         margin: 10px auto 0;
-         width: 50px;
+         margin: 40px auto 0;
+         width: 40px;
          height: auto;
+         z-index: 1001;
+         position: relative;
       }
       /* Make the banner ad taller and use a larger font */
       #adBar {
