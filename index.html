@@ -313,9 +313,10 @@
        (Now applies when the viewport is narrow OR in portrait mode)
        ===================================================== */
     @media only screen and (max-width: 480px), only screen and (orientation: portrait) {
-      /* Allow scrolling when keyboard is open */
+      /* Allow vertical scrolling when keyboard is open, but hide horizontal overflow */
       html, body {
-        overflow: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
       }
       /* Make the container full-width and position lower on the screen */
       .input-container {
@@ -356,7 +357,9 @@
          width: 100%;
       }
       .styled-button {
-         width: 100%;
+         /* Make the button auto-sized (with max-width) so it never matches the full width of the URL bar */
+         width: auto;
+         max-width: 80%;
          margin-bottom: 20px;
       }
       /* Adjust the small logo for mobile: smaller size, extra spacing, and on top layer */
