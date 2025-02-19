@@ -177,6 +177,9 @@
       gap: 10px;
     }
     
+    /* ======================================
+       SEND TO QUEST BUTTON (Updated)
+       ====================================== */
     .styled-button {
       position: relative;
       padding: 10px 20px;
@@ -187,11 +190,10 @@
       color: #333;
       cursor: pointer;
       backdrop-filter: blur(10px);
-      transition: all 1.33s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
       isolation: isolate;
-      box-shadow:
-        0 2px 3px 1px rgba(180,180,180,0.3),
-        inset 0 -10px 20px -10px rgba(255,255,255,0.9);
+      box-shadow: 0 2px 3px 1px rgba(180,180,180,0.3),
+                  inset 0 -10px 20px -10px rgba(255,255,255,0.9);
       transform: scale(1);
       display: flex;
       align-items: center;
@@ -201,16 +203,13 @@
     
     .styled-button:hover:not(:active),
     .styled-button.active {
-      transition-duration: 0.665s;
-      transform: scale(1.2);
-      box-shadow: 
-        0 4px 10px -2px rgba(180,180,180,0.4),
-        inset 0 0 0 transparent;
+      transform: scale(1.05);
+      background-color: rgba(255,255,255,0.35);
+      box-shadow: 0 4px 8px rgba(180,180,180,0.4);
     }
     
     .styled-button:active {
-      transform: scale(1.1);
-      transition-duration: 0.665s;
+      transform: scale(0.98);
     }
     
     .styled-button .shimmer {
