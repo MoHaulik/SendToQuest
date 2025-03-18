@@ -455,6 +455,10 @@
       if (!finalUrl.startsWith('https://')) {
         finalUrl = 'https://' + finalUrl.replace(/^https?:\/\//, '');
       }
+      // If the URL ends with a slash, explicitly point to index.html
+      if (finalUrl.endsWith('/')) {
+        finalUrl += 'index.html';
+      }
       const encodedUrl = encodeURIComponent(finalUrl);
       const webLaunchEndpoint = `https://www.oculus.com/open_url/?url=${encodedUrl}`;
       saveRecentUrl(finalUrl);
