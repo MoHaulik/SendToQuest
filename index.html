@@ -2,7 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Send to Quest</title>
+  
+  <!-- ==========================================
+       SUPERCHARGED SEO & META TAGS
+       ========================================== -->
+  <title>Send to Quest | Instantly Open Links in VR</title>
+  <meta name="description" content="Easily send any URL from your phone or desktop directly to your Meta Quest VR headset. Skip the typing in VR—just paste, send, and open." />
+  <meta name="keywords" content="Meta Quest, VR, Oculus Quest, Send link to VR, Open URL in Quest, Quest 2, Quest 3, WebXR, VR Browser link" />
+  <meta name="author" content="Send to Quest" />
+  <meta name="robots" content="index, follow" />
+  
+  <!-- Open Graph / Facebook / iMessage -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yourwebsite.com/" /> <!-- Update this with your actual URL -->
+  <meta property="og:title" content="Send to Quest | Instantly Open Links in VR" />
+  <meta property="og:description" content="Skip the typing in VR. Paste a link here to send it instantly to your Meta Quest headset." />
+  <meta property="og:image" content="SendToQuest.png" /> <!-- Best if you use a high-res 1200x630 image here eventually -->
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://yourwebsite.com/" />
+  <meta property="twitter:title" content="Send to Quest | Instantly Open Links in VR" />
+  <meta property="twitter:description" content="Skip the typing in VR. Paste a link here to send it instantly to your Meta Quest headset." />
+  <meta property="twitter:image" content="SendToQuest.png" />
+
   <!-- Prevent caching so that returning to the site refreshes -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
   <meta http-equiv="Pragma" content="no-cache" />
@@ -58,12 +81,8 @@
     }
     
     @keyframes ringFloat {
-      0% {
-        transform: translate(-50%, -50%) scale(1);
-      }
-      100% {
-        transform: translate(-50%, -50%) scale(1.2);
-      }
+      0% { transform: translate(-50%, -50%) scale(1); }
+      100% { transform: translate(-50%, -50%) scale(1.2); }
     }
     
     /* ======================================
@@ -79,12 +98,39 @@
       width: 600px; /* fixed layout width for desktop */
       z-index: 1000;
     }
+
+    /* --------------------------------------------------------
+       INTRO TEXT (WeTransfer Style)
+       -------------------------------------------------------- */
+    .intro-text {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+      padding: 0 20px;
+    }
+
+    .intro-text h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      letter-spacing: -0.5px;
+    }
+
+    .intro-text p {
+      font-size: 16px;
+      font-weight: 400;
+      margin: 0;
+      line-height: 1.5;
+      color: #444;
+      opacity: 0.9;
+    }
     
     .input-row {
       display: flex;
       align-items: center;
       width: 100%;
       margin-bottom: 0;
+      position: relative;
     }
     
     /* Big logo (SendToQuest.png) */
@@ -110,6 +156,7 @@
       cursor: text;
       transition: all 1.33s ease;
       isolation: isolate;
+      position: relative;
     }
     
     .drop-area:focus-within,
@@ -121,11 +168,7 @@
       transition-duration: 0.665s;
     }
     
-    /* --------------------------------------------------------
-       URL INPUT STYLE (Desktop)
-       --------------------------------------------------------
-       The padding-left value is set to 116px per design.
-    --------------------------------------------------------- */
+    /* URL INPUT STYLE */
     .drop-area input {
       width: 100%;
       height: 100%;
@@ -137,18 +180,21 @@
       font-size: 18px;
       font-family: inherit;
       padding-left: 116px; /* For desktop/tablet */
+      box-sizing: border-box;
     }
     
     .suggestions {
       position: absolute;
-      top: 110px;
-      width: 100%;
+      top: 100%;
+      left: 148px; /* Align with input start */
+      width: calc(100% - 148px);
       background: rgba(255, 255, 255, 0.95);
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       display: none;
       z-index: 9999;
+      margin-top: 5px;
     }
     
     .suggestions.visible {
@@ -156,7 +202,7 @@
     }
     
     .suggestions div {
-      padding: 10px;
+      padding: 10px 20px;
       font-size: 16px;
       color: #333;
       cursor: pointer;
@@ -168,7 +214,7 @@
     
     /* Button container (Desktop) */
     .button-container {
-      margin-top: 5px;
+      margin-top: 10px;
       margin-left: 148px;
       width: calc(100% - 148px);
       display: flex;
@@ -263,6 +309,7 @@
     .styled-button .text {
       color: #333;
       position: relative;
+      font-weight: 500;
       z-index: 3;
     }
     
@@ -288,6 +335,7 @@
       justify-content: space-between;
       z-index: 2000;
       cursor: pointer;
+      box-sizing: border-box;
     }
     
     #adBar .ad-content {
@@ -309,72 +357,89 @@
     
     /* =====================================================
        MOBILE PHONE Adjustments
-       (Now applies when the viewport is narrow OR in portrait mode)
        ===================================================== */
     @media only screen and (max-width: 480px), only screen and (orientation: portrait) {
-      /* Allow vertical scrolling when keyboard is open, but hide horizontal overflow */
       html, body {
         overflow-y: auto;
         overflow-x: hidden;
       }
-      /* Make the container full-width and position lower on the screen */
+      
       .input-container {
          width: 90%;
          position: relative;
-         top: 80px; /* Increased top offset */
+         top: 60px; /* Adjusted to fit the text better */
          left: 50%;
          transform: translateX(-50%);
          text-align: center;
+         padding-bottom: 100px; /* Give space for scrolling above the ad bar */
       }
-      /* Stack the items vertically */
+      
+      /* Intro text adjustments for mobile */
+      .intro-text h1 {
+        font-size: 24px;
+      }
+      .intro-text p {
+        font-size: 15px;
+      }
+
       .input-row {
          flex-direction: column;
          align-items: center;
          margin-bottom: 20px;
       }
-      /* Center the big logo */
+      
       .big-logo {
          margin: 0 auto 20px auto;
-         width: 150px; /* Adjust size if desired */
+         width: 150px; 
       }
-      /* Full-width URL bar with centered text */
+      
       .drop-area {
          width: 100%;
-         margin-bottom: 20px;
+         margin-bottom: 10px;
          font-size: 20px;
          line-height: 60px;
       }
+      
       .drop-area input {
          text-align: center;
-         padding-left: 0; /* Remove extra padding for centered text */
+         padding-left: 0; 
       }
-      /* Stack the button and small logo vertically */
+      
+      .suggestions {
+         left: 0;
+         width: 100%;
+         position: relative;
+         margin-bottom: 15px;
+      }
+
       .button-container {
          flex-direction: column;
          align-items: center;
          margin-left: 0;
          width: 100%;
+         margin-top: 10px;
       }
+      
       .styled-button {
-         /* Make the button auto-sized (with max-width) so it never matches the full width of the URL bar */
          width: auto;
          max-width: 80%;
          margin-bottom: 20px;
       }
-      /* Adjust the small logo for mobile: smaller size, extra spacing, and on top layer */
+      
       .small-logo {
          display: block;
-         margin-top: 30px; /* Increased spacing above the logo */
+         margin-top: 10px; 
          width: 50px;
          height: auto;
          position: relative;
          z-index: 1010;
       }
-      /* Make the banner ad taller and use a larger font */
+      
       #adBar {
-         padding: 20px;
-         font-size: 18px;
+         padding: 15px;
+         font-size: 16px;
          height: auto;
+         justify-content: center;
       }
     }
   </style>
@@ -386,15 +451,24 @@
   <!-- Subtle glow ring for an Apple “pop” effect -->
   <div class="glow-ring"></div>
   
-  <!-- Input and button UI with logos -->
-  <div class="input-container">
+  <!-- Semantic Main Container -->
+  <main class="input-container">
+    
+    <!-- NEW INTRO TEXT -->
+    <div class="intro-text" id="introText">
+      <h1 id="introTitle">Tired of typing URLs in VR?</h1>
+      <p id="introDesc">Paste your link below to send it instantly to your Meta Quest. Powered by Meta's secure network, your page will open automatically the next time you put on your headset.</p>
+    </div>
+
+    <!-- Input and button UI with logos -->
     <div class="input-row">
       <img src="SendToQuest.png" alt="Send to Quest Logo" class="big-logo" />
       <div class="drop-area" id="dropArea">
         <input type="text" id="urlInput" placeholder="Enter or paste a URL" autocomplete="off" />
       </div>
+      <div class="suggestions" id="suggestions"></div>
     </div>
-    <div class="suggestions" id="suggestions"></div>
+    
     <div class="button-container">
       <button id="openOnQuestButton" class="styled-button">
         <span class="text">Send to Quest</span>
@@ -402,7 +476,7 @@
       </button>
       <img src="SendToQuest2.png" alt="Send to Quest Small Logo" class="small-logo" />
     </div>
-  </div>
+  </main>
   
   <!-- Banner Ad Bar (clickable) -->
   <div id="adBar">
@@ -464,8 +538,11 @@
       saveRecentUrl(finalUrl);
       
       // Play the sent.mp3 sound effect (1 second long) then redirect.
-      const audio = new Audio('sent.mp3');
-      audio.play();
+      try {
+        const audio = new Audio('sent.mp3');
+        audio.play().catch(e => console.log('Audio play prevented by browser:', e));
+      } catch (e) {}
+      
       setTimeout(() => {
         window.location.href = webLaunchEndpoint;
       }, 1000);
@@ -524,6 +601,10 @@
       
       urlInput.addEventListener('input', () => {
         const inputVal = urlInput.value.trim().toLowerCase();
+        if (inputVal === '') {
+          document.getElementById('suggestions').classList.remove('visible');
+          return;
+        }
         const recentUrls = loadRecentUrls();
         const filtered = recentUrls.filter(u => u.toLowerCase().includes(inputVal));
         showSuggestions(filtered);
@@ -536,10 +617,11 @@
         }
       });
       
-      urlInput.addEventListener('blur', () => {
-        setTimeout(() => {
+      // Close suggestions when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.input-row')) {
           document.getElementById('suggestions').classList.remove('visible');
-        }, 200);
+        }
       });
       
       openOnQuestButton.addEventListener('click', function() {
@@ -560,22 +642,35 @@
      * LANGUAGE TOGGLE FUNCTIONALITY
      *****************************************/
     // Determine initial language based on the browser's language
-    // If the language starts with 'ja', use Japanese; otherwise, use English.
     let currentLang = (navigator.language && navigator.language.startsWith('ja')) ? 'ja' : 'en';
     
     function updateLanguage() {
       const urlInput = document.getElementById('urlInput');
       const adSpan = document.querySelector('#adBar .ad-content span');
       const langToggle = document.getElementById('langToggle');
+      const introTitle = document.getElementById('introTitle');
+      const introDesc = document.getElementById('introDesc');
       
       if (currentLang === 'ja') {
+        // UI Translations
         urlInput.placeholder = "URL を入力またはペースト";
         adSpan.textContent = "無料のVRゲームを探索して今すぐプレイ！";
+        
+        // Intro Text Translations
+        introTitle.textContent = "VRでのURL入力にうんざりしていませんか？";
+        introDesc.textContent = "下の欄にリンクを貼り付けるだけで、Meta Questに即座に送信されます。Metaの安全なネットワークを通じて、次回ヘッドセットを装着したときにページが自動的に開きます。";
+        
         // Change toggle button to show US flag for switching back to English.
         langToggle.textContent = "🇺🇸";
       } else {
+        // UI Translations
         urlInput.placeholder = "Enter or paste a URL";
         adSpan.textContent = "Explore and play free VR games now";
+        
+        // Intro Text Translations
+        introTitle.textContent = "Tired of typing URLs in VR?";
+        introDesc.textContent = "Paste your link below to send it instantly to your Meta Quest. Powered by Meta's secure network, your page will open automatically the next time you put on your headset.";
+        
         // Show Japanese flag for switching to Japanese.
         langToggle.textContent = "🇯🇵";
       }
@@ -623,7 +718,6 @@
     let weightedGradients = [];
     allowedGradients.forEach(g => {
       if (g.code === 9) {
-        // Multiply code 9 five times (adjust multiplier as needed)
         for (let i = 0; i < 5; i++) {
           weightedGradients.push(g);
         }
